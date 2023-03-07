@@ -41,8 +41,11 @@ class ambee:
                 raise InvalidInputError("The call is missing either lat or lng value")
             else:
                 if parallel == False:
+                    outputs = []
                     for lat, lng in zip(lats, lngs):
-                        func(by=by, lat=lat, lng=lng, **func_kwargs)
+                        output = func(by=by, lat=lat, lng=lng, **func_kwargs)
+                        outputs.append(output)
+                    return outputs
 
         if by == "postcode":
             if postalCodes == None or countryCodes == None:
@@ -51,34 +54,46 @@ class ambee:
                 )
             else:
                 if parallel == False:
+                    outputs = []
                     for postalCode, countryCode in zip(postalCodes, countryCodes):
-                        func(
+                        output = func(
                             by=by,
                             postalCode=postalCode,
                             countryCode=countryCode,
                             **func_kwargs,
                         )
+                        outputs.append(output)
+                    return outputs
         if by == "city":
             if cities == None:
                 raise InvalidInputError("The call is missing city value")
             else:
                 if parallel == False:
+                    outputs = []
                     for city in cities:
-                        func(by=by, city=city, **func_kwargs)
+                        output = func(by=by, city=city, **func_kwargs)
+                        outputs.append(output)
+                    return outputs
         if by == "countrycode":
             if countryCodes == None:
                 raise InvalidInputError("The call is missing countryCode value")
             else:
                 if parallel == False:
+                    outputs = []
                     for countryCode in countryCodes:
-                        func(by=by, countryCode=countryCode, **func_kwargs)
+                        output = func(by=by, countryCode=countryCode, **func_kwargs)
+                        outputs.append(output)
+                    return outputs
         if by == "place":
             if places == None:
                 raise InvalidInputError("The call is missing place value")
             else:
                 if parallel == False:
+                    outputs = []
                     for place in places:
-                        func(by=by, place=place, **func_kwargs)
+                        output = func(by=by, place=place, **func_kwargs)
+                        outputs.append(output)
+                    return outputs
 
 
 class air_quality(ambee):
