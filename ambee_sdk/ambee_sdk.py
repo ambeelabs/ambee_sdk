@@ -146,7 +146,7 @@ class air_quality(ambee):
                     )
                     if return_df == True:
                         return pd.json_normalize(
-                            response.json(), record_path=["stations"]
+                            response.json(), record_path=["stations"], errors="ignore"
                         )
                     else:
                         return response.json()
@@ -173,7 +173,7 @@ class air_quality(ambee):
                     )
                     if return_df == True:
                         return pd.json_normalize(
-                            response.json(), record_path=["stations"]
+                            response.json(), record_path=["stations"], errors="ignore"
                         )
                     else:
                         return response.json()
@@ -206,7 +206,7 @@ class air_quality(ambee):
                         )
                     if return_df == True:
                         return pd.json_normalize(
-                            response.json(), record_path=["stations"]
+                            response.json(), record_path=["stations"], errors="ignore"
                         )
                     else:
                         return response.json()
@@ -239,7 +239,7 @@ class air_quality(ambee):
                         )
                     if return_df == True:
                         return pd.json_normalize(
-                            response.json(), record_path=["stations"]
+                            response.json(), record_path=["stations"], errors="ignore"
                         )
                     else:
                         return response.json()
@@ -293,7 +293,9 @@ class air_quality(ambee):
                         headers=headers,
                     )
                     if return_df == True:
-                        return pd.json_normalize(response.json(), record_path=["data"])
+                        return pd.json_normalize(
+                            response.json(), record_path=["data"], errors="ignore"
+                        )
                     else:
                         return response.json()
                 except Exception as e:
@@ -317,7 +319,9 @@ class air_quality(ambee):
                         headers=headers,
                     )
                     if return_df == True:
-                        return pd.json_normalize(response.json(), record_path=["data"])
+                        return pd.json_normalize(
+                            response.json(), record_path=["data"], errors="ignore"
+                        )
                     else:
                         return response.json()
                 except Exception as e:
@@ -354,7 +358,7 @@ class air_quality(ambee):
                     )
                     if return_df == True:
                         return pd.json_normalize(
-                            response.json(), record_path=["stations"]
+                            response.json(), record_path=["stations"], errors="ignore"
                         )
                     else:
                         return response.json()
@@ -400,7 +404,10 @@ class pollen(ambee):
                     )
                     if return_df == True:
                         return pd.json_normalize(
-                            response.json(), record_path=["data"], meta=["lat", "lng"]
+                            response.json(),
+                            record_path=["data"],
+                            meta=["lat", "lng"],
+                            errors="ignore",
                         )
                     else:
                         return response.json()
@@ -424,7 +431,10 @@ class pollen(ambee):
                     )
                     if return_df == True:
                         return pd.json_normalize(
-                            response.json(), record_path=["data"], meta=["lat", "lng"]
+                            response.json(),
+                            record_path=["data"],
+                            meta=["lat", "lng"],
+                            errors="ignore",
                         )
                     else:
                         return response.json()
@@ -470,7 +480,10 @@ class pollen(ambee):
                     )
                     if return_df == True:
                         return pd.json_normalize(
-                            response.json(), record_path=["data"], meta=["lat", "lng"]
+                            response.json(),
+                            record_path=["data"],
+                            meta=["lat", "lng"],
+                            errors="ignore",
                         )
                     else:
                         return response.json()
@@ -494,7 +507,10 @@ class pollen(ambee):
                     )
                     if return_df == True:
                         return pd.json_normalize(
-                            response.json(), record_path=["data"], meta=["lat", "lng"]
+                            response.json(),
+                            record_path=["data"],
+                            meta=["lat", "lng"],
+                            errors="ignore",
                         )
                     else:
                         return response.json()
@@ -536,7 +552,10 @@ class pollen(ambee):
                     )
                     if return_df == True:
                         return pd.json_normalize(
-                            response.json(), record_path=["data"], meta=["lat", "lng"]
+                            response.json(),
+                            record_path=["data"],
+                            meta=["lat", "lng"],
+                            errors="ignore",
                         )
                     else:
                         return response.json()
@@ -560,7 +579,10 @@ class pollen(ambee):
                     )
                     if return_df == True:
                         return pd.json_normalize(
-                            response.json(), record_path=["data"], meta=["lat", "lng"]
+                            response.json(),
+                            record_path=["data"],
+                            meta=["lat", "lng"],
+                            errors="ignore",
                         )
                     else:
                         return response.json()
@@ -613,7 +635,9 @@ class weather(ambee):
                             headers=headers,
                         )
                     if return_df == True:
-                        return pd.json_normalize(response.json()["data"])
+                        return pd.json_normalize(
+                            response.json()["data"], errors="ignore"
+                        )
                     else:
                         return response.json()
                 except Exception as e:
@@ -694,6 +718,7 @@ class weather(ambee):
                             response.json()["data"],
                             record_path=["history"],
                             meta=["lat", "lng"],
+                            errors="ignore",
                         )
                     else:
                         return response.json()
@@ -765,6 +790,7 @@ class weather(ambee):
                             response.json()["data"],
                             record_path=["forecast"],
                             meta=["lat", "lng"],
+                            errors="ignore",
                         )
                     else:
                         return response.json()
@@ -816,7 +842,9 @@ class weather(ambee):
                             headers=headers,
                         )
                     if return_df == True:
-                        return pd.json_normalize(response.json(), record_path=["data"])
+                        return pd.json_normalize(
+                            response.json(), record_path=["data"], errors="ignore"
+                        )
                     else:
                         return response.json()
                 except Exception as e:
@@ -847,7 +875,9 @@ class weather(ambee):
                             headers=headers,
                         )
                     if return_df == True:
-                        return pd.json_normalize(response.json(), record_path=["data"])
+                        return pd.json_normalize(
+                            response.json(), record_path=["data"], errors="ignore"
+                        )
                     else:
                         return response.json()
                 except Exception as e:
@@ -893,7 +923,7 @@ class fire(ambee):
                     if return_df == True:
                         try:
                             return pd.json_normalize(
-                                response.json(), record_path=["data"]
+                                response.json(), record_path=["data"], errors="ignore"
                             )
                         except:
                             print("Cannot convert to df")
@@ -922,7 +952,7 @@ class fire(ambee):
                     if return_df == True:
                         try:
                             return pd.json_normalize(
-                                response.json(), record_path=["data"]
+                                response.json(), record_path=["data"], errors="ignore"
                             )
                         except:
                             print("Cannot convert to df")
@@ -969,7 +999,9 @@ class ndvi(ambee):
                         headers=headers,
                     )
                     if return_df == True:
-                        return pd.json_normalize(response.json(), record_path=["data"])
+                        return pd.json_normalize(
+                            response.json(), record_path=["data"], errors="ignore"
+                        )
                     else:
                         return response.json()
                 except Exception as e:
