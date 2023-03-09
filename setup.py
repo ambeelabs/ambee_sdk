@@ -15,7 +15,7 @@ setup(
     description="Python SDK for Ambee's APIs",
     long_description_content_type="text/markdown",
     long_description=long_description,
-    install_requires=[ "requests", "pandas"
+    install_requires=[ "requests", "pandas", "geopandas"
     ],
      classifiers=[
         'Development Status :: 4 - Beta',
