@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+import geopandas as gpd
 
 
 class InvalidInputError(Exception):
@@ -27,73 +28,97 @@ class ambee:
         self,
         func,
         by,
-        lats=None,
-        lngs=None,
+        lat_lngs=None,
         postalCodes=None,
         countryCodes=None,
         cities=None,
         places=None,
-        parallel=False,
         **func_kwargs,
     ):
+        """Function to make multiple api calls for a list of inputs.
+
+        Args:
+            func (function): Function to make multiple calls on.
+            by (str): by value to be passed to the function
+            lat_lngs (list, optional): list of pairs of latitudes and longitudes. Defaults to None.
+            postalCodes (list, optional): list of postal codes and corresponding country codes. Defaults to None.
+            countryCodes (list, optional): list of country codes for by country-code api call. Defaults to None.
+            cities (list, optional): list of cities. Defaults to None.
+            places (list, optional): list of places. Defaults to None.
+            parallel (bool, optional): Makes requests in parallel if True. Defaults to False.
+
+        Raises:
+            InvalidInputError: Executes when there is an invalid input
+
+        Returns:
+            outputs: list of api responses in dictionary or pandas DataFrame format
+        """
         if by == "latlng":
-            if lats == None or lngs == None:
+            if lat_lngs == None:
                 raise InvalidInputError("The call is missing either lat or lng value")
             else:
-                if parallel == False:
-                    outputs = []
-                    for lat, lng in zip(lats, lngs):
-                        output = func(by=by, lat=lat, lng=lng, **func_kwargs)
-                        outputs.append(output)
-                    return outputs
+                outputs = []
+                for lat, lng in lat_lngs:
+                    output = func(by=by, lat=lat, lng=lng, **func_kwargs)
+                    outputs.append(output)
+                return outputs
 
         if by == "postcode":
-            if postalCodes == None or countryCodes == None:
+            if postalCodes == None:
                 raise InvalidInputError(
                     "The call is missing either postalCode or countryCode value"
                 )
             else:
-                if parallel == False:
-                    outputs = []
-                    for postalCode, countryCode in zip(postalCodes, countryCodes):
-                        output = func(
-                            by=by,
-                            postalCode=postalCode,
-                            countryCode=countryCode,
-                            **func_kwargs,
-                        )
-                        outputs.append(output)
-                    return outputs
+                outputs = []
+                for postalCode, countryCode in postalCodes:
+                    output = func(
+                        by=by,
+                        postalCode=postalCode,
+                        countryCode=countryCode,
+                        **func_kwargs,
+                    )
+                    outputs.append(output)
+                return outputs
         if by == "city":
             if cities == None:
                 raise InvalidInputError("The call is missing city value")
             else:
-                if parallel == False:
-                    outputs = []
-                    for city in cities:
-                        output = func(by=by, city=city, **func_kwargs)
-                        outputs.append(output)
-                    return outputs
+                outputs = []
+                for city in cities:
+                    output = func(by=by, city=city, **func_kwargs)
+                    outputs.append(output)
+                return outputs
         if by == "countrycode":
             if countryCodes == None:
                 raise InvalidInputError("The call is missing countryCode value")
             else:
-                if parallel == False:
-                    outputs = []
-                    for countryCode in countryCodes:
-                        output = func(by=by, countryCode=countryCode, **func_kwargs)
-                        outputs.append(output)
-                    return outputs
+                outputs = []
+                for countryCode in countryCodes:
+                    output = func(by=by, countryCode=countryCode, **func_kwargs)
+                    outputs.append(output)
+                return outputs
         if by == "place":
             if places == None:
                 raise InvalidInputError("The call is missing place value")
             else:
-                if parallel == False:
-                    outputs = []
-                    for place in places:
-                        output = func(by=by, place=place, **func_kwargs)
-                        outputs.append(output)
-                    return outputs
+                outputs = []
+                for place in places:
+                    output = func(by=by, place=place, **func_kwargs)
+                    outputs.append(output)
+                return outputs
+
+    def to_geodataframe(self, df, x="lng", y="lat"):
+        """_summary_
+
+        Args:
+            df (DataFrame): Pandas DataFrame
+            x (str, optional): Name of longitude column. Defaults to 'lng'.
+            y (str, optional): Name of latitude column. Defaults to 'lat'.
+
+        Returns:
+            GeoDataFrame: geopandas GeoDataFrame
+        """
+        return gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(x=df[x], y=df[y]))
 
 
 class air_quality(ambee):
