@@ -12,4 +12,12 @@ Welcome to ambee-sdk's documentation!
 
    modules
 
+Examples
+=======================================
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
+   Examples
+   Examples_df
+   Examples_multiple_calls
