@@ -1,6 +1,8 @@
 ambee\_sdk package
 ==================
 
+The examples mentioned in the documentation is also part of examples jupyter notebook present in the github repo, So feel free to download it and play with it.
+
 Submodules
 ----------
 
