@@ -13,10 +13,3 @@ Welcome to ambee-sdk's documentation!
    modules
 
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
