@@ -395,7 +395,9 @@ class air_quality(ambee):
 class pollen(ambee):
     """Contains methods to fetch data from Pollen API"""
 
-    def get_latest(self, by, lat=None, lng=None, place=None, return_df=False):
+    def get_latest(
+        self, by, lat=None, lng=None, place=None, speciesRisk="false", return_df=False
+    ):
         """Retrives latest pollen data for a given location
 
         Args:
@@ -422,8 +424,8 @@ class pollen(ambee):
                         "Content-type": "application/json",
                     }
                     response = requests.get(
-                        "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat={}&lng={}".format(
-                            lat, lng
+                        "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat={}&lng={}&speciesRisk={}".format(
+                            lat, lng, speciesRisk
                         ),
                         headers=headers,
                     )
@@ -449,8 +451,8 @@ class pollen(ambee):
                         "Content-type": "application/json",
                     }
                     response = requests.get(
-                        "https://api.ambeedata.com/latest/pollen/by-place?place={}".format(
-                            place
+                        "https://api.ambeedata.com/latest/pollen/by-place?place={}&speciesRisk={}".format(
+                            place, speciesRisk
                         ),
                         headers=headers,
                     )
@@ -468,7 +470,15 @@ class pollen(ambee):
                     raise e
 
     def get_historical(
-        self, by, from_val, to_val, lat=None, lng=None, place=None, return_df=False
+        self,
+        by,
+        from_val,
+        to_val,
+        lat=None,
+        lng=None,
+        place=None,
+        speciesRisk="false",
+        return_df=False,
     ):
         """Retrives historical pollen data for a given location
 
@@ -498,8 +508,8 @@ class pollen(ambee):
                         "Content-type": "application/json",
                     }
                     response = requests.get(
-                        "https://api.ambeedata.com/history/pollen/by-lat-lng?lat={}&lng={}&from={}&to={}".format(
-                            lat, lng, from_val, to_val
+                        "https://api.ambeedata.com/history/pollen/by-lat-lng?lat={}&lng={}&from={}&to={}&speciesRisk={}".format(
+                            lat, lng, from_val, to_val, speciesRisk
                         ),
                         headers=headers,
                     )
@@ -525,8 +535,8 @@ class pollen(ambee):
                         "Content-type": "application/json",
                     }
                     response = requests.get(
-                        "https://api.ambeedata.com/history/pollen/by-place?place={}&from={}&to={}".format(
-                            place, from_val, to_val
+                        "https://api.ambeedata.com/history/pollen/by-place?place={}&from={}&to={}&speciesRisk={}".format(
+                            place, from_val, to_val, speciesRisk
                         ),
                         headers=headers,
                     )
@@ -543,7 +553,9 @@ class pollen(ambee):
                     print(response.status_code)
                     raise e
 
-    def get_forecast(self, by, lat=None, lng=None, place=None, return_df=False):
+    def get_forecast(
+        self, by, lat=None, lng=None, place=None, speciesRisk="false", return_df=False
+    ):
         """Retrives forecasted pollen data for a given location
 
         Args:
@@ -570,8 +582,8 @@ class pollen(ambee):
                         "Content-type": "application/json",
                     }
                     response = requests.get(
-                        "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat={}&lng={}".format(
-                            lat, lng
+                        "https://api.ambeedata.com/forecast/pollen/by-lat-lng?lat={}&lng={}&speciesRisk={}".format(
+                            lat, lng, speciesRisk
                         ),
                         headers=headers,
                     )
@@ -597,8 +609,8 @@ class pollen(ambee):
                         "Content-type": "application/json",
                     }
                     response = requests.get(
-                        "https://api.ambeedata.com/forecast/pollen/by-place?place={}".format(
-                            place
+                        "https://api.ambeedata.com/forecast/pollen/by-place?place={}&speciesRisk={}".format(
+                            place, speciesRisk
                         ),
                         headers=headers,
                     )
