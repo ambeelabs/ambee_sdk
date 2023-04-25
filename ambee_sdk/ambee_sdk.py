@@ -396,7 +396,7 @@ class pollen(ambee):
     """Contains methods to fetch data from Pollen API"""
 
     def get_latest(
-        self, by, lat=None, lng=None, place=None, speciesRisk="false", return_df=False
+        self, by, lat=None, lng=None, place=None, speciesRisk=False, return_df=False
     ):
         """Retrives latest pollen data for a given location
 
@@ -477,7 +477,7 @@ class pollen(ambee):
         lat=None,
         lng=None,
         place=None,
-        speciesRisk="false",
+        speciesRisk=False,
         return_df=False,
     ):
         """Retrives historical pollen data for a given location
@@ -554,7 +554,7 @@ class pollen(ambee):
                     raise e
 
     def get_forecast(
-        self, by, lat=None, lng=None, place=None, speciesRisk="false", return_df=False
+        self, by, lat=None, lng=None, place=None, speciesRisk=False, return_df=False
     ):
         """Retrives forecasted pollen data for a given location
 
