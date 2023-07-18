@@ -405,7 +405,7 @@ class pollen(ambee):
             lat (float/int/str, optional): Latitude. Defaults to None.
             lng (float/int/str, optional): Longitude. Defaults to None.
             place (str, optional): Placename. Defaults to None.
-            speciesRisk (bool, optional): Gives risk for species if True 
+            speciesRisk (bool, optional): Gives risk for species if True
             return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
 
         Raises:
@@ -926,7 +926,9 @@ class weather(ambee):
 class fire(ambee):
     """Contains methods to fetch data from Fire API"""
 
-    def get_latest(self, by, lat=None, lng=None, burnedAreaLoc=False,type=None,return_df=False):
+    def get_latest(
+        self, by, lat=None, lng=None, burnedAreaLoc=False, type=None, return_df=False
+    ):
         """Retrives latest fire data for a given location
 
         Args:
@@ -997,7 +999,7 @@ class fire(ambee):
                 else:
                     response = requests.get(
                         "https://api.ambeedata.com/fire/v2/latest/by-polygon?burnedAreaLoc={}&type={}".format(
-                            burnedAreaLoc,type
+                            burnedAreaLoc, type
                         ),
                         headers=headers,
                     )
@@ -1053,6 +1055,109 @@ class ndvi(ambee):
                     if return_df == True:
                         return pd.json_normalize(
                             response.json(), record_path=["data"], errors="ignore"
+                        )
+                    else:
+                        return response.json()
+                except Exception as e:
+                    print(response.status_code)
+                    raise e
+
+
+class natural_disaster(ambee):
+    """Contains methods to fetch data from NDVI API"""
+
+    def get_latest(self, by, lat=None, lng=None, return_df=False):
+        """Retrives latest disasters data for a given location
+
+        Args:
+            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
+            lat (float/int/str, optional): Latitude. Defaults to None.
+            lng (float/int/str, optional): Longitude. Defaults to None.
+            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+
+        Raises:
+            InvalidInputError: Raised when the input to query is invalid
+            e: Any exception that occurs during api call and data parsing
+
+        Returns:
+            dict: API response in dictionary format
+        """
+        if by == "latlng":
+            if lat == None or lng == None:
+                raise InvalidInputError("The call is missing either lat or lng value")
+            else:
+                try:
+                    headers = {
+                        "x-api-key": self.x_api_key,
+                        "Content-type": "application/json",
+                    }
+                    response = requests.get(
+                        "https://api.ambeedata.com/disasters/latest/by-lat-lng?lat={}&lng={}".format(
+                            lat, lng
+                        ),
+                        headers=headers,
+                    )
+                    if return_df == True:
+                        return pd.json_normalize(
+                            response.json(), record_path=["data"], errors="ignore"
+                        )
+                    else:
+                        return response.json()
+                except Exception as e:
+                    print(response.status_code)
+                    raise e
+
+    def get_historical(
+        self,
+        by,
+        from_val,
+        to_val,
+        lat=None,
+        lng=None,
+        return_df=False,
+    ):
+        """Retrives historical disasters data for a given location
+
+        Args:
+            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
+            from_val (str): Start timestamp for historical query
+            to_val (_type_): End timestamp for historical query
+            lat (float/int/str, optional): Latitude. Defaults to None.
+            lng (float/int/str, optional): Longitude. Defaults to None.
+            place (str, optional): Placename. Defaults to None.
+            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+
+        Raises:
+            InvalidInputError: Raised when the input to query is invalid
+            e: Any exception that occurs during api call and data parsing
+
+        Returns:
+            dict: API response in dictionary format
+        """
+        if by == "latlng":
+            if lat == None or lng == None:
+                raise InvalidInputError("The call is missing either lat or lng value")
+            else:
+                try:
+                    headers = {
+                        "x-api-key": self.x_api_key,
+                        "Content-type": "application/json",
+                    }
+                    response = requests.get(
+                        "https://api.ambeedata.com/disasters/history/by-lat-lng?lat={}&lng={}&from={}&to={}".format(
+                            lat,
+                            lng,
+                            from_val,
+                            to_val,
+                        ),
+                        headers=headers,
+                    )
+                    if return_df == True:
+                        return pd.json_normalize(
+                            response.json(),
+                            record_path=["data"],
+                            meta=["lat", "lng"],
+                            errors="ignore",
                         )
                     else:
                         return response.json()
