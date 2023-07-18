@@ -405,6 +405,7 @@ class pollen(ambee):
             lat (float/int/str, optional): Latitude. Defaults to None.
             lng (float/int/str, optional): Longitude. Defaults to None.
             place (str, optional): Placename. Defaults to None.
+            speciesRisk (bool, optional): Gives risk for species if True 
             return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
 
         Raises:
@@ -925,14 +926,15 @@ class weather(ambee):
 class fire(ambee):
     """Contains methods to fetch data from Fire API"""
 
-    def get_latest(self, by, lat=None, lng=None, place=None, return_df=False):
+    def get_latest(self, by, lat=None, lng=None, burnedAreaLoc=False,type=None,return_df=False):
         """Retrives latest fire data for a given location
 
         Args:
             by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
             lat (float/int/str, optional): Latitude. Defaults to None.
             lng (float/int/str, optional): Longitude. Defaults to None.
-            place (str, optional): Placename. Defaults to None.
+            burnedAreaLoc (bool, optional): Burned area polygon locations
+            type (str,optional): The type of fire (Reported Fire/ Detected Fire)
             return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
 
         Raises:
@@ -951,12 +953,20 @@ class fire(ambee):
                         "x-api-key": self.x_api_key,
                         "Content-type": "application/json",
                     }
-                    response = requests.get(
-                        "https://api.ambeedata.com/latest/fire?lat={}&lng={}".format(
-                            lat, lng
-                        ),
-                        headers=headers,
-                    )
+                    if type is None:
+                        response = requests.get(
+                            "https://api.ambeedata.com/fire/v2/latest/by-lat-lng?lat={}&lng={}&burnedAreaLoc={}".format(
+                                lat, lng, burnedAreaLoc
+                            ),
+                            headers=headers,
+                        )
+                    else:
+                        response = requests.get(
+                            "https://api.ambeedata.com/fire/v2/latest/by-lat-lng?lat={}&lng={}&burnedAreaLoc={}&type={}".format(
+                                lat, lng, burnedAreaLoc, type
+                            ),
+                            headers=headers,
+                        )
                     if return_df == True:
                         try:
                             return pd.json_normalize(
@@ -971,34 +981,39 @@ class fire(ambee):
                     print(response.status_code)
                     raise e
 
-        if by == "place":
-            if place == None:
-                raise InvalidInputError("The call is missing place value")
-            else:
-                try:
-                    headers = {
-                        "x-api-key": self.x_api_key,
-                        "Content-type": "application/json",
-                    }
+        if by == "polygon":
+            try:
+                headers = {
+                    "x-api-key": self.x_api_key,
+                    "Content-type": "application/json",
+                }
+                if type is None:
                     response = requests.get(
-                        "https://api.ambeedata.com/latest/fire/by-place?place={}".format(
-                            place
+                        "https://api.ambeedata.com/fire/v2/latest/by-polygon?burnedAreaLoc={}".format(
+                            burnedAreaLoc
                         ),
                         headers=headers,
                     )
-                    if return_df == True:
-                        try:
-                            return pd.json_normalize(
-                                response.json(), record_path=["data"], errors="ignore"
-                            )
-                        except:
-                            print("Cannot convert to df")
-                            return response.json()
-                    else:
+                else:
+                    response = requests.get(
+                        "https://api.ambeedata.com/fire/v2/latest/by-polygon?burnedAreaLoc={}&type={}".format(
+                            burnedAreaLoc,type
+                        ),
+                        headers=headers,
+                    )
+                if return_df == True:
+                    try:
+                        return pd.json_normalize(
+                            response.json(), record_path=["data"], errors="ignore"
+                        )
+                    except:
+                        print("Cannot convert to df")
                         return response.json()
-                except Exception as e:
-                    print(response.status_code)
-                    raise e
+                else:
+                    return response.json()
+            except Exception as e:
+                print(response.status_code)
+                raise e
 
 
 class ndvi(ambee):
