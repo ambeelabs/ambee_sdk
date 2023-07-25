@@ -847,7 +847,9 @@ class fire(ambee):
             by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
             lat (float/int/str, optional): Latitude. Defaults to None.
             lng (float/int/str, optional): Longitude. Defaults to None.
-            burnedAreaLoc (bool, optional): Burned area polygon locations
+            place (str, optional): _description_. Defaults to None.
+            coordinates (list, optional): _description_. Defaults to None.
+            burnedAreaLoc (bool, optional): Returns burned area polygon locations if True. Defaults to False.
             type (str,optional): The type of fire (Reported Fire/ Detected Fire)
             return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
 
@@ -956,6 +958,21 @@ class fire(ambee):
         lng=None,
         return_df=False,
     ):
+        """Retrives fire danger forecasr for a given location
+
+        Args:
+            by (_type_): _description_
+            lat (_type_, optional): _description_. Defaults to None.
+            lng (_type_, optional): _description_. Defaults to None.
+            return_df (bool, optional): _description_. Defaults to False.
+
+        Raises:
+            InvalidInputError: Raised when the input to query is invalid
+            e: Any exception that occurs during api call and data parsing
+
+        Returns:
+            dict: API response in dictionary format
+        """
         base_url = "https://api.ambeedata.com/fire/v2/forecast/"
         if by == "latlng":
             if lat == None or lng == None:
@@ -1044,6 +1061,9 @@ class natural_disaster(ambee):
             by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
             lat (float/int/str, optional): Latitude. Defaults to None.
             lng (float/int/str, optional): Longitude. Defaults to None.
+            alertLevel (str, optional): Alert level value should be red, orange or green. Defaults to None.
+            continent (str, optional): Continent value should be afr, ant, asia, aus, eur, nar, sar or ocean. Defaults to None.
+            eventType (str, optional): Event Type value should be tropicalcyclone, flood, volcano, forestfire, drought or earthquake. Defaults to None.
             return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
 
         Raises:
@@ -1105,13 +1125,14 @@ class natural_disaster(ambee):
             to_val (_type_): End timestamp for historical query
             lat (float/int/str, optional): Latitude. Defaults to None.
             lng (float/int/str, optional): Longitude. Defaults to None.
-            place (str, optional): Placename. Defaults to None.
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+            alertLevel (str, optional): Alert level value should be red, orange or green. Defaults to None.
+            continent (str, optional): Continent value should be afr, ant, asia, aus, eur, nar, sar or ocean. Defaults to None.
+            eventType (str, optional): Event Type value should be tropicalcyclone, flood, volcano, forestfire, drought or earthquake. Defaults to None.
+            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.s
 
         Raises:
             InvalidInputError: Raised when the input to query is invalid
             e: Any exception that occurs during api call and data parsing
-
         Returns:
             dict: API response in dictionary format
         """
