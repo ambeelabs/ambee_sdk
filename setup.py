@@ -8,7 +8,7 @@ long_description = open(os.path.join(here, 'README.md')).read()
 setup(
     name="ambee_sdk",
     packages=find_packages(include=["ambee_sdk"]),
-    version="0.1.0",
+    version="0.1.1",
     author="Ambee",
     license="MIT",
     url='',

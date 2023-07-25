@@ -877,7 +877,7 @@ class fire(ambee):
                     if return_df == True:
                         try:
                             return pd.json_normalize(
-                                response.json(), record_path=["data"], errors="ignore"
+                                response.json(), record_path=["result"], errors="ignore"
                             )
                         except:
                             print("Cannot convert to df")
@@ -909,7 +909,7 @@ class fire(ambee):
                     if return_df == True:
                         try:
                             return pd.json_normalize(
-                                response.json(), record_path=["data"], errors="ignore"
+                                response.json(), record_path=["result"], errors="ignore"
                             )
                         except:
                             print("Cannot convert to df")
@@ -938,7 +938,7 @@ class fire(ambee):
                     if return_df == True:
                         try:
                             return pd.json_normalize(
-                                response.json(), record_path=["data"], errors="ignore"
+                                response.json(), record_path=["result"], errors="ignore"
                             )
                         except:
                             print("Cannot convert to df")
@@ -971,7 +971,7 @@ class fire(ambee):
                     if return_df == True:
                         try:
                             return pd.json_normalize(
-                                response.json(), record_path=["data"], errors="ignore"
+                                response.json(), record_path=["result"], errors="ignore"
                             )
                         except:
                             print("Cannot convert to df")
@@ -1073,7 +1073,7 @@ class natural_disaster(ambee):
                     response = requests.get(url, headers=headers)
                     if return_df == True:
                         return pd.json_normalize(
-                            response.json(), record_path=["data"], errors="ignore"
+                            response.json(), record_path=["result"], errors="ignore"
                         )
                     else:
                         return response.json()
@@ -1137,7 +1137,7 @@ class natural_disaster(ambee):
                     if return_df == True:
                         return pd.json_normalize(
                             response.json(),
-                            record_path=["data"],
+                            record_path=["result"],
                             meta=["lat", "lng"],
                             errors="ignore",
                         )
