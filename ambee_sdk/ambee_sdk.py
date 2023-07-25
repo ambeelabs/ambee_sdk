@@ -1028,7 +1028,16 @@ class ndvi(ambee):
 class natural_disaster(ambee):
     """Contains methods to fetch data from NDVI API"""
 
-    def get_latest(self, by, lat=None, lng=None, alertLevel=None, return_df=False):
+    def get_latest(
+        self,
+        by,
+        lat=None,
+        lng=None,
+        alertLevel=None,
+        continent=None,
+        eventType=None,
+        return_df=False,
+    ):
         """Retrives latest disasters data for a given location
 
         Args:
@@ -1055,6 +1064,12 @@ class natural_disaster(ambee):
                         "Content-type": "application/json",
                     }
                     url = base_url + "by-lat-lng?lat={}&lng={}".format(lat, lng)
+                    if alertLevel is not None:
+                        url = url + "&alertLevel={}".format(alertLevel)
+                    if continent is not None:
+                        url = url + "&continent={}".format(continent)
+                    if eventType is not None:
+                        url = url + "&eventType={}".format(eventType)
                     response = requests.get(url, headers=headers)
                     if return_df == True:
                         return pd.json_normalize(
@@ -1073,6 +1088,9 @@ class natural_disaster(ambee):
         to_val,
         lat=None,
         lng=None,
+        alertLevel=None,
+        continent=None,
+        eventType=None,
         return_df=False,
     ):
         """Retrives historical disasters data for a given location
@@ -1109,6 +1127,12 @@ class natural_disaster(ambee):
                         from_val,
                         to_val,
                     )
+                    if alertLevel is not None:
+                        url = url + "&alertLevel={}".format(alertLevel)
+                    if continent is not None:
+                        url = url + "&continent={}".format(continent)
+                    if eventType is not None:
+                        url = url + "&eventType={}".format(eventType)
                     response = requests.get(url, headers=headers)
                     if return_df == True:
                         return pd.json_normalize(
