@@ -159,9 +159,28 @@ examples with dataframe output
 
 .. code:: ipython3
 
+    fire.get_latest(by="polygon", burnedAreaLoc=True,coordinates=[[-147.6153523, 64.8027699],[-147.6097851, 64.8030029],[-147.6097314, 64.8010606]],return_df=True)
+
+.. code:: ipython3
+
+    fire.get_forcast(by="latlng", lat=-28.25, lng=142.5, return_df=True)
+
+.. code:: ipython3
+
     ndvi = ambee.ndvi(x_api_key=x_api_key)
 
 .. code:: ipython3
 
     ndvi.get_latest(by='latlng', lat=12, lng=77, return_df=True)
 
+.. code:: ipython3
+
+    disaster = ambee.natural_disaster(x_api_key=x_api_key)
+
+.. code:: ipython3
+
+    disaster.get_latest(by="latlng",lat=-15.76166996,lng=-72.48771045489497, return_df=True)
+
+.. code:: ipython3
+
+    disaster.get_historical(by="latlng",lat=-15.76166996,lng=-72.48771045489497, from_val=from_val, to_val=to_val, return_df=True)
