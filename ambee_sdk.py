@@ -5,11 +5,12 @@ import geopandas as gpd
 
 class InvalidInputError(Exception):
     def __init__(self, message) -> None:
-        """Executes when there is an invalid input
+    """Executes when there is an invalid input
 
-        Args:
-            message (str): Message to be displayed
-        """
+    :param message: Message to be displayed
+    :type message: str
+
+    """
         super().__init__(message)
 
 
@@ -37,21 +38,27 @@ class ambee:
     ):
         """Function to make multiple api calls for a list of inputs.
 
-        Args:
-            func (function): Function to make multiple calls on.
-            by (str): by value to be passed to the function
-            lat_lngs (list, optional): list of pairs of latitudes and longitudes. Defaults to None.
-            postalCodes (list, optional): list of postal codes and corresponding country codes. Defaults to None.
-            countryCodes (list, optional): list of country codes for by country-code api call. Defaults to None.
-            cities (list, optional): list of cities. Defaults to None.
-            places (list, optional): list of places. Defaults to None.
-            parallel (bool, optional): Makes requests in parallel if True. Defaults to False.
+        :param func: Function to make multiple calls on.
+        :type func: function
+        :param by: by value to be passed to the function
+        :type by: str
+        :param lat_lngs: list of pairs of latitudes and longitudes. Defaults to None.
+        :type lat_lngs: list
+        :param postalCodes: list of postal codes and corresponding country codes. Defaults to None.
+        :type postalCodes: list
+        :param countryCodes: list of country codes for by country-code api call. Defaults to None.
+        :type countryCodes: list
+        :param cities: list of cities. Defaults to None.
+        :type cities: list
+        :param places: list of places. Defaults to None.
+        :type places: list
+        :param parallel: Makes requests in parallel if True. Defaults to False.
+        :type parallel: bool
+        :param **func_kwargs: 
+        :returns: list of api responses in dictionary or pandas DataFrame format
+        :rtype: outputs
+        :raises InvalidInputError: Executes when there is an invalid input
 
-        Raises:
-            InvalidInputError: Executes when there is an invalid input
-
-        Returns:
-            outputs: list of api responses in dictionary or pandas DataFrame format
         """
         if by == "latlng":
             if lat_lngs == None:
@@ -110,13 +117,15 @@ class ambee:
     def to_geodataframe(self, df, x="lng", y="lat"):
         """_summary_
 
-        Args:
-            df (DataFrame): Pandas DataFrame
-            x (str, optional): Name of longitude column. Defaults to 'lng'.
-            y (str, optional): Name of latitude column. Defaults to 'lat'.
+        :param df: Pandas DataFrame
+        :type df: DataFrame
+        :param x: Name of longitude column. Defaults to 'lng'.
+        :type x: str
+        :param y: Name of latitude column. Defaults to 'lat'.
+        :type y: str
+        :returns: geopandas GeoDataFrame
+        :rtype: GeoDataFrame
 
-        Returns:
-            GeoDataFrame: geopandas GeoDataFrame
         """
         return gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(x=df[x], y=df[y]))
 
@@ -137,22 +146,18 @@ class air_quality(ambee):
     ):
         """Retrives latest Air Quality data for a given location
 
-        Args:
-            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
-            lat (float/int/str, optional): Latitude. Defaults to None.
-            lng (float/int/str, optional): Longitude. Defaults to None.
-            postalCode (int/str, optional): Post Code. Defaults to None.
-            countryCode (str, optional): Two letter ISO Code for the country. Defaults to None.
-            city (str, optional): Name of the city. Defaults to None.
-            limit (int, optional): Parameter to limit query results. Defaults to None.
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+        :param by: str
+        :param lat: float (Default value = None)
+        :param lng: float (Default value = None)
+        :param postalCode: int (Default value = None)
+        :param countryCode: str (Default value = None)
+        :param city: str (Default value = None)
+        :param limit: int (Default value = None)
+        :param return_df: bool (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/latest/"
         if by == "latlng":
@@ -265,22 +270,18 @@ class air_quality(ambee):
     ):
         """Retrives historical Air Quality data for a given location
 
-        Args:
-            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
-            from_val (str): Start timestamp for historical query
-            to_val (_type_): End timestamp for historical query
-            lat (float/int/str, optional): Latitude. Defaults to None.
-            lng (float/int/str, optional): Longitude. Defaults to None.
-            postalCode (int/str, optional): Post Code. Defaults to None.
-            countryCode (str, optional): Two letter ISO Code for the country. Defaults to None.
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+        :param by: str
+        :param from_val: str
+        :param to_val: _type_
+        :param lat: float (Default value = None)
+        :param lng: float (Default value = None)
+        :param postalCode: int (Default value = None)
+        :param countryCode: str (Default value = None)
+        :param return_df: bool (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/history/"
         if by == "latlng":
@@ -336,17 +337,13 @@ class air_quality(ambee):
     def get_analytics(self, by="order", order="worst", return_df=False):
         """Get Air Quality Analytics
 
-        Args:
-            by (str, optional): signifies the type of input supported by Ambee API. Refer to API Documentation. Defaults to "order".
-            order (str, optional): Order by worst or best. Defaults to "worst".
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+        :param by: str (Default value = "order")
+        :param order: str (Default value = "worst")
+        :param return_df: bool (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/latest/"
         if by == "order":
@@ -379,20 +376,16 @@ class pollen(ambee):
     ):
         """Retrives latest pollen data for a given location
 
-        Args:
-            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
-            lat (float/int/str, optional): Latitude. Defaults to None.
-            lng (float/int/str, optional): Longitude. Defaults to None.
-            place (str, optional): Placename. Defaults to None.
-            speciesRisk (bool, optional): Gives risk for species if True
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+        :param by: str
+        :param lat: float (Default value = None)
+        :param lng: float (Default value = None)
+        :param place: str (Default value = None)
+        :param speciesRisk: bool (Default value = False)
+        :param return_df: bool (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/latest/pollen/"
         if by == "latlng":
@@ -459,21 +452,18 @@ class pollen(ambee):
     ):
         """Retrives historical pollen data for a given location
 
-        Args:
-            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
-            from_val (str): Start timestamp for historical query
-            to_val (_type_): End timestamp for historical query
-            lat (float/int/str, optional): Latitude. Defaults to None.
-            lng (float/int/str, optional): Longitude. Defaults to None.
-            place (str, optional): Placename. Defaults to None.
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+        :param by: str
+        :param from_val: str
+        :param to_val: _type_
+        :param lat: float (Default value = None)
+        :param lng: float (Default value = None)
+        :param place: str (Default value = None)
+        :param return_df: bool (Default value = False)
+        :param speciesRisk:  (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/history/pollen/"
         if by == "latlng":
@@ -538,19 +528,16 @@ class pollen(ambee):
     ):
         """Retrives forecasted pollen data for a given location
 
-        Args:
-            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
-            lat (float/int/str, optional): Latitude. Defaults to None.
-            lng (float/int/str, optional): Longitude. Defaults to None.
-            place (str, optional): Placename. Defaults to None.
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+        :param by: str
+        :param lat: float (Default value = None)
+        :param lng: float (Default value = None)
+        :param place: str (Default value = None)
+        :param return_df: bool (Default value = False)
+        :param speciesRisk:  (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/forecast/pollen/"
         if by == "latlng":
@@ -611,19 +598,15 @@ class weather(ambee):
     def get_latest(self, by, lat=None, lng=None, units=None, return_df=False):
         """Retrives latest weather data for a given location
 
-        Args:
-            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
-            lat (float/int/str, optional): Latitude. Defaults to None.
-            lng (float/int/str, optional): Longitude. Defaults to None.
-            units (str, optional): Gives data in metric units if 'si' is passed. Defaults to None.
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+        :param by: str
+        :param lat: float (Default value = None)
+        :param lng: float (Default value = None)
+        :param units: str (Default value = None)
+        :param return_df: bool (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/weather/latest/"
         if by == "latlng":
@@ -662,22 +645,18 @@ class weather(ambee):
     ):
         """Retrives historical weather data for a given location
 
-        Args:
-            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
-            from_val (str): Start timestamp for historical query
-            to_val (_type_): End timestamp for historical query
-            lat (float/int/str, optional): Latitude. Defaults to None.
-            lng (float/int/str, optional): Longitude. Defaults to None.
-            daily (bool, optional): Gives daily aggregate if True. Defaults to False.
-            units (str, optional): Gives data in metric units if 'si' is passed. Defaults to None.
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+        :param by: str
+        :param from_val: str
+        :param to_val: _type_
+        :param lat: float (Default value = None)
+        :param lng: float (Default value = None)
+        :param daily: bool (Default value = False)
+        :param units: str (Default value = None)
+        :param return_df: bool (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/weather/history/"
         if by == "latlng":
@@ -715,20 +694,16 @@ class weather(ambee):
     ):
         """Retrives forecasted weather data for a given location
 
-        Args:
-            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
-            lat (float/int/str, optional): Latitude. Defaults to None.
-            lng (float/int/str, optional): Longitude. Defaults to None.
-            daily (bool, optional): Gives daily aggregate if True. Defaults to False.
-            units (str, optional): Gives data in metric units if 'si' is passed. Defaults to None.
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+        :param by: str
+        :param lat: float (Default value = None)
+        :param lng: float (Default value = None)
+        :param daily: bool (Default value = False)
+        :param units: str (Default value = None)
+        :param return_df: bool (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/weather/forecast/"
         if by == "latlng":
@@ -764,20 +739,16 @@ class weather(ambee):
     ):
         """Gets severe weather data for a given location
 
-        Args:
-            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
-            lat (float/int/str, optional): Latitude. Defaults to None.
-            lng (float/int/str, optional): Longitude. Defaults to None.
-            place (str, optional): Placename. Defaults to None.
-            units (str, optional): Gives data in metric units if 'si' is passed. Defaults to None.
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+        :param by: str
+        :param lat: float (Default value = None)
+        :param lng: float (Default value = None)
+        :param place: str (Default value = None)
+        :param units: str (Default value = None)
+        :param return_df: bool (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/weather/alerts/latest/"
         if by == "latlng":
@@ -843,22 +814,18 @@ class fire(ambee):
     ):
         """Retrives latest fire data for a given location
 
-        Args:
-            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
-            lat (float/int/str, optional): Latitude. Defaults to None.
-            lng (float/int/str, optional): Longitude. Defaults to None.
-            place (str, optional): _description_. Defaults to None.
-            coordinates (list, optional): _description_. Defaults to None.
-            burnedAreaLoc (bool, optional): Returns burned area polygon locations if True. Defaults to False.
-            type (str,optional): The type of fire (Reported Fire/ Detected Fire)
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+        :param by: str
+        :param lat: float (Default value = None)
+        :param lng: float (Default value = None)
+        :param place: str (Default value = None)
+        :param coordinates: list (Default value = None)
+        :param burnedAreaLoc: bool (Default value = False)
+        :param type: str (Default value = None)
+        :param return_df: bool (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/fire/v2/latest/"
         if by == "latlng":
@@ -960,18 +927,14 @@ class fire(ambee):
     ):
         """Retrives fire danger forecasr for a given location
 
-        Args:
-            by (_type_): _description_
-            lat (_type_, optional): _description_. Defaults to None.
-            lng (_type_, optional): _description_. Defaults to None.
-            return_df (bool, optional): _description_. Defaults to False.
+        :param by: _type_
+        :param lat: _type_ (Default value = None)
+        :param lng: _type_ (Default value = None)
+        :param return_df: bool (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/fire/v2/forecast/"
         if by == "latlng":
@@ -1006,18 +969,14 @@ class ndvi(ambee):
     def get_latest(self, by, lat=None, lng=None, return_df=False):
         """Retrives latest ndvi data for a given location
 
-        Args:
-            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
-            lat (float/int/str, optional): Latitude. Defaults to None.
-            lng (float/int/str, optional): Longitude. Defaults to None.
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+        :param by: str
+        :param lat: float (Default value = None)
+        :param lng: float (Default value = None)
+        :param return_df: bool (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/ndvi/latest/"
         if by == "latlng":
@@ -1043,7 +1002,7 @@ class ndvi(ambee):
 
 
 class natural_disaster(ambee):
-    """Contains methods to fetch data from disasters API"""
+    """Contains methods to fetch data from NDVI API"""
 
     def get_latest(
         self,
@@ -1057,21 +1016,17 @@ class natural_disaster(ambee):
     ):
         """Retrives latest disasters data for a given location
 
-        Args:
-            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
-            lat (float/int/str, optional): Latitude. Defaults to None.
-            lng (float/int/str, optional): Longitude. Defaults to None.
-            alertLevel (str, optional): Alert level value should be red, orange or green. Defaults to None.
-            continent (str, optional): Continent value should be afr, ant, asia, aus, eur, nar, sar or ocean. Defaults to None.
-            eventType (str, optional): Event Type value should be tropicalcyclone, flood, volcano, forestfire, drought or earthquake. Defaults to None.
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.
+        :param by: str
+        :param lat: float (Default value = None)
+        :param lng: float (Default value = None)
+        :param alertLevel: str (Default value = None)
+        :param continent: str (Default value = None)
+        :param eventType: str (Default value = None)
+        :param return_df: bool (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/disasters/latest/"
         if by == "latlng":
@@ -1119,22 +1074,19 @@ class natural_disaster(ambee):
     ):
         """Retrives historical disasters data for a given location
 
-        Args:
-            by (str): signifies the type of input supported by Ambee API. Refer to API Documentation.
-            from_val (str): Start timestamp for historical query
-            to_val (_type_): End timestamp for historical query
-            lat (float/int/str, optional): Latitude. Defaults to None.
-            lng (float/int/str, optional): Longitude. Defaults to None.
-            alertLevel (str, optional): Alert level value should be red, orange or green. Defaults to None.
-            continent (str, optional): Continent value should be afr, ant, asia, aus, eur, nar, sar or ocean. Defaults to None.
-            eventType (str, optional): Event Type value should be tropicalcyclone, flood, volcano, forestfire, drought or earthquake. Defaults to None.
-            return_df (bool, optional): Converts results to pandas dataframe if True. Defaults to False.s
+        :param by: str
+        :param from_val: str
+        :param to_val: _type_
+        :param lat: float (Default value = None)
+        :param lng: float (Default value = None)
+        :param alertLevel: str (Default value = None)
+        :param continent: str (Default value = None)
+        :param eventType: str (Default value = None)
+        :param return_df: bool (Default value = False)
+        :returns: dict: API response in dictionary format
+        :raises InvalidInputError: Raised when the input to query is invalid
+        :raises e: Any exception that occurs during api call and data parsing
 
-        Raises:
-            InvalidInputError: Raised when the input to query is invalid
-            e: Any exception that occurs during api call and data parsing
-        Returns:
-            dict: API response in dictionary format
         """
         base_url = "https://api.ambeedata.com/disasters/history/"
         if by == "latlng":

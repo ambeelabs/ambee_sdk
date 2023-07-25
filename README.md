@@ -9,7 +9,7 @@ Ambee SDK for python provides classes and methods to make use of ambee's APIs in
 
 Read our API documentation: [Ambee: Developers tool](https://docs.ambeedata.com/DeveloperTools/)
 
-Readthedocs - [Welcome to ambee-sdk’s documentation! &mdash; ambee-sdk 0.1.0a documentation](https://ambee-sdk.readthedocs.io/en/latest/index.html)
+Readthedocs - [Welcome to ambee-sdk’s documentation! ](https://ambee-sdk.readthedocs.io/en/latest/index.html)
 
 ## Getting Started
 
