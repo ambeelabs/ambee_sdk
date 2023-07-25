@@ -1072,9 +1072,13 @@ class natural_disaster(ambee):
                         url = url + "&eventType={}".format(eventType)
                     response = requests.get(url, headers=headers)
                     if return_df == True:
-                        return pd.json_normalize(
-                            response.json(), record_path=["result"], errors="ignore"
-                        )
+                        try:
+                            return pd.json_normalize(
+                                response.json(), record_path=["result"], errors="ignore"
+                            )
+                        except:
+                            print("Cannot convert to df")
+                            return response.json()
                     else:
                         return response.json()
                 except Exception as e:
@@ -1135,12 +1139,13 @@ class natural_disaster(ambee):
                         url = url + "&eventType={}".format(eventType)
                     response = requests.get(url, headers=headers)
                     if return_df == True:
-                        return pd.json_normalize(
-                            response.json(),
-                            record_path=["result"],
-                            meta=["lat", "lng"],
-                            errors="ignore",
-                        )
+                        try:
+                            return pd.json_normalize(
+                                response.json(), record_path=["result"], errors="ignore"
+                            )
+                        except:
+                            print("Cannot convert to df")
+                            return response.json()
                     else:
                         return response.json()
                 except Exception as e:
